@@ -220,13 +220,13 @@ func configGnome(username string) error {
 	}
 
 	cmds := [][]string{
-		{"gsettings", "set", "org.gnome.desktop.interface", "scaling-factor", "2"},
-		{"gsettings", "set", "org.gnome.desktop.peripherals.touchpad", "click-method", "fingers"},
-		{"gsettings", "set", "org.gnome.desktop.peripherals.touchpad", "tap-to-click", "true"},
-		{"gsettings", "set", "org.gnome.desktop.peripherals.touchpad", "speed", "1"},
-		{"gsettings", "set", "org.gnome.desktop.peripherals.touchpad", "two-finger-scrolling-enabled", "true"},
-		{"gsettings", "set", "org.gnome.desktop.peripherals.keyboard", "repeat-interval", "40"},
-		{"gsettings", "set", "org.gnome.desktop.peripherals.keyboard", "delay", "350"},
+		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.interface", "scaling-factor", "2"},
+		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.touchpad", "click-method", "fingers"},
+		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.touchpad", "tap-to-click", "true"},
+		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.touchpad", "speed", "1"},
+		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.touchpad", "two-finger-scrolling-enabled", "true"},
+		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.keyboard", "repeat-interval", "40"},
+		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.keyboard", "delay", "350"},
 	}
 	for _, c := range cmds {
 		if err := sh(asUser(username, c)...); err != nil {
