@@ -53,6 +53,17 @@ Linux work on my computer, I decided to make my computer work on Linux.
 * Disk encryption, non-disruptive security improvements.
 * Non-disruptive performance optimizations.
 
+### Features
+
+* Install Arch in under 10 minutes with almost no effort.
+* GNOME desktop with Wayland.
+* HiDPI config, font fixes.
+* Touchpad guestures.
+* XPS-specific software preinstalled.
+* Minimal bloat.
+* Disk encryption, disabled root login.
+* Aligned partitions, periodic TRIM, fast mirrors.
+
 
 [Dell XPS 13 9360]: https://wiki.archlinux.org/index.php/Dell_XPS_13_(9360)
 [bootable USB]: docs/bootable-usb.md
