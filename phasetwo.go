@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
 	"strings"
 	"time"
 )
@@ -32,6 +35,10 @@ func phaseTwo() error {
 	}
 
 	if err := installPackages(); err != nil {
+		return err
+	}
+
+	if err := installAURs(username); err != nil {
 		return err
 	}
 
@@ -169,6 +176,10 @@ func installPackages() error {
 		"openssh",
 		"lshw",
 
+		// For gestures AUR.
+		"xdotool",
+		"wmctrl",
+
 		"pulseaudio-alsa",
 		"ffmpeg0.10",
 		"pulseaudio-bluetooth",
@@ -194,6 +205,7 @@ func installPackages() error {
 		"gnome-photos",
 		"gnome-todo",
 		"seahorse",
+		"gnome-software",
 
 		"ttf-dejavu",
 		"adobe-source-code-pro-fonts",
@@ -208,6 +220,26 @@ func installPackages() error {
 	cmd = append(cmd, "--noconfirm")
 
 	return sh(cmd...)
+}
+
+func installAURs(username string) error {
+	aurs := []string{
+		"https://aur.archlinux.org/cgit/aur.git/snapshot/libinput-gestures.tar.gz",
+		"https://aur.archlinux.org/cgit/aur.git/snapshot/systemd-boot-pacman-hook.tar.gz",
+
+		// Need to install deps first before fwupd.
+		"https://aur.archlinux.org/cgit/aur.git/snapshot/pesign.tar.gz",
+		"https://aur.archlinux.org/cgit/aur.git/snapshot/fwupdate.tar.gz",
+		"https://aur.archlinux.org/cgit/aur.git/snapshot/fwupd.tar.gz",
+	}
+
+	for _, snap := range aurs {
+		if err := installAUR(username, snap); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func configGnome(username string) error {
@@ -295,4 +327,81 @@ func configBootloader() error {
 	}
 
 	return fwrite("/boot/loader/loader.conf", loaderconf)
+}
+
+func installAUR(username, snapURL string) error {
+	const (
+		aurFile = "xpsaur.tar.gz"
+		aurDir  = "xpsaurdir"
+	)
+
+	if err := curlo(aurFile, snapURL); err != nil {
+		return err
+	}
+
+	buildPath := filepath.Join("/home", username, aurDir)
+	if err := os.Mkdir(buildPath, 0755); err != nil {
+		return err
+	}
+
+	err := sh("tar", "-C", buildPath, "-xf", aurFile, "--strip", "1")
+	if err != nil {
+		return err
+	}
+
+	userID, err := uid(username)
+	if err != nil {
+		return err
+	}
+	groupID, err := gid(username)
+	if err != nil {
+		return err
+	}
+
+	if err := chownR(buildPath, userID, groupID); err != nil {
+		return err
+	}
+
+	origPwd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	if err := os.Chdir(buildPath); err != nil {
+		return err
+	}
+
+	// makepkg command requires NOPASSWD. Otherwise, it will fail.
+	origSudo, err := nopasswdUser(username)
+	if err != nil {
+		return err
+	}
+	err = sh("sudo", "-u", username, "makepkg", "-sri", "--noconfirm")
+	if err != nil {
+		return err
+	}
+	if err := fwrite("/etc/sudoers", origSudo); err != nil {
+		return err
+	}
+
+	// Clean up time!
+	if err := os.Chdir(origPwd); err != nil {
+		return err
+	}
+	if err := os.RemoveAll(buildPath); err != nil {
+		return err
+	}
+	return os.Remove(aurFile)
+}
+
+// nopasswdUser sets NOPASSWD on a given user. It returns the original sudoers
+// data so that callers can restore it.
+func nopasswdUser(username string) (string, error) {
+	orig, err := ioutil.ReadFile("/etc/sudoers")
+	if err != nil {
+		return "", err
+	}
+
+	return string(orig),
+		fwrite("/etc/sudoers", fmt.Sprintf(nopasswdSudoers, username))
 }

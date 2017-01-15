@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"strconv"
 	"strings"
 )
 
@@ -34,6 +35,24 @@ func blkuuid(dev string) (string, error) {
 
 	sps := strings.Split(out, "\n")
 	return strings.TrimSpace(sps[0]), nil
+}
+
+func uid(username string) (int, error) {
+	out, _, err := getSh("id", "--user", username)
+	if err != nil {
+		return -1, err
+	}
+
+	return strconv.Atoi(strings.TrimSpace(out))
+}
+
+func gid(username string) (int, error) {
+	out, _, err := getSh("id", "--group", username)
+	if err != nil {
+		return -1, err
+	}
+
+	return strconv.Atoi(strings.TrimSpace(out))
 }
 
 func title(s string) {

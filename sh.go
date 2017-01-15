@@ -6,10 +6,8 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 	"os"
 	"os/exec"
-	"path"
 	"path/filepath"
 	"time"
 )
@@ -118,9 +116,17 @@ func fappend(name, data string) error {
 	return ioutil.WriteFile(name, buf.Bytes(), fi.Mode())
 }
 
-// curlO downloads a file to the current directory. The name of the file is the
-// last element of the URL path.
-func curlO(u string) error {
+// curlo downloads a file to a given directory.
+func curlo(outPath, u string) error {
+	ofi, err := os.Stat(outPath)
+	if os.IsNotExist(err) {
+		// Fine.
+	} else if err != nil {
+		return err
+	} else if ofi.IsDir() {
+		return fmt.Errorf("failed to create file %q: is a directory", outPath)
+	}
+
 	c := &http.Client{Timeout: 15 * time.Second}
 	resp, err := c.Get(u)
 	if err != nil {
@@ -128,12 +134,7 @@ func curlO(u string) error {
 	}
 	defer resp.Body.Close()
 
-	addr, err := url.Parse(u)
-	if err != nil {
-		return err
-	}
-
-	out, err := os.Create(path.Base(addr.Path))
+	out, err := os.Create(outPath)
 	if err != nil {
 		return err
 	}
@@ -145,4 +146,13 @@ func curlO(u string) error {
 
 func clear() error {
 	return sh("clear")
+}
+
+func chownR(root string, uid, gid int) error {
+	return filepath.Walk(root, func(name string, fi os.FileInfo, err error) error {
+		if err == nil {
+			err = os.Chown(name, uid, gid)
+		}
+		return err
+	})
 }

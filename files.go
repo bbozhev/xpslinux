@@ -124,6 +124,11 @@ root ALL=(ALL) ALL
 ## (the '#' here does not indicate a comment)
 #includedir /etc/sudoers.d`
 
+var nopasswdSudoers = `root ALL=(ALL) ALL
+%%sudo ALL=(ALL) ALL
+%s ALL=(ALL) NOPASSWD:ALL
+#includedir /etc/sudoers.d`
+
 var mkinitcpioconf = `# vim:set ft=sh
 # MODULES
 # The following modules are loaded before any boot hooks are
