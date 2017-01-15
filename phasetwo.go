@@ -57,7 +57,17 @@ func configTime() error {
 	clear()
 	title("Configuring time")
 
-	if err := sh("tzselect"); err != nil {
+	zi, err := chooseZoneInfo()
+	if err != nil {
+		return err
+	}
+
+	if err := os.Remove("/etc/localtime"); err != nil {
+		return err
+	}
+
+	err = os.Symlink(filepath.Join("/usr/share/zoneinfo", zi), "/etc/localtime")
+	if err != nil {
 		return err
 	}
 

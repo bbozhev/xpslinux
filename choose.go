@@ -13,6 +13,11 @@ func chooseMirrorCountry() (string, error) {
 	return readAnswer(validMirrorCountries)
 }
 
+func chooseZoneInfo() (string, error) {
+	fmt.Print("Enter your timezone (US/Pacific): ")
+	return readLine()
+}
+
 func chooseLocale() (string, error) {
 	fmt.Print("Enter a locale (en_US.UTF-8 UTF-8): ")
 	return readAnswer(validLocales)
