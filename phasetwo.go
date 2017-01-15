@@ -248,7 +248,7 @@ func installAURs(username string) error {
 		}
 	}
 
-	return nil
+	return sh("sudo", "-u", username, "libinput-gestures-setup", "autostart")
 }
 
 func configGnome(username string) error {
