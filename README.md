@@ -2,6 +2,8 @@
 
 Arch Linux installer for the Dell XPS Developer Edition line.
 
+(Alpha. Hasn't even been versioned yet.)
+
 ## Install
 
 First, create a [bootable USB].
