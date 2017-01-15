@@ -2,6 +2,8 @@
 
 Note: I replaced the stock Killer wireless chip with an [Intel chip] instead.
 
+This has the QHD+ display at 3200x1800 resolution.
+
 ```
 $ sudo lshw -short
 H/W path       Device   Class          Description

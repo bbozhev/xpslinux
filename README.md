@@ -1,8 +1,8 @@
 # xpsarch
 
-Arch Linux installer for the Dell XPS Developer Edition line.
+Arch Linux installer for the [Dell XPS 13 9360]
 
-(Alpha. Hasn't even been versioned yet.)
+(Alpha)
 
 ## Install
 
@@ -16,7 +16,7 @@ run the installer.
 
 ```
 $ wifi-menu --obscure  # Select your network, enter password.
-$ curl -O $URL
+$ curl -OL https://github.com/variadico/xpsarch/releases/download/v0.1.0/xpsarch
 $ chmod +x xpsarch
 $ ./xpsarch
 ```
@@ -54,6 +54,7 @@ Linux work on my computer, I decided to make my computer work on Linux.
 * Non-disruptive performance optimizations.
 
 
+[Dell XPS 13 9360]: https://wiki.archlinux.org/index.php/Dell_XPS_13_(9360)
 [bootable USB]: docs/bootable-usb.md
 [Intel chip]: http://ark.intel.com/products/86068/Intel-Dual-Band-Wireless-AC-8260
 [Linux sucks]: https://twitter.com/SwiftOnSecurity/status/817406256583471104
