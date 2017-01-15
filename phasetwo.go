@@ -130,12 +130,7 @@ func configUsers() (string, error) {
 	clear()
 	title("Configuring users")
 
-	fmt.Println("Enter a new root password")
-	if err := sh("passwd"); err != nil {
-		return "", err
-	}
-
-	fmt.Println("\nConfiguring a new non-root user")
+	fmt.Println("Configuring a new non-root user")
 	fmt.Print("Enter a username: ")
 	username, err := readLine()
 	if err != nil {
@@ -168,6 +163,11 @@ func configUsers() (string, error) {
 		return "", err
 	}
 
+	// Disable root login.
+	if err := sh("passwd", "--lock", "root"); err != nil {
+		return "", err
+	}
+
 	return username, nil
 }
 
@@ -183,7 +183,6 @@ func installPackages() error {
 		"util-linux",
 		"ufw",
 		"dosfstools",
-		"openssh",
 		"lshw",
 
 		// For gestures AUR.
