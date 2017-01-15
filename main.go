@@ -10,7 +10,13 @@ import (
 
 func main() {
 	chroot := flag.Bool("chroot", false, "Assume in chrooted environment")
+	version := flag.Bool("version", false, "Print version")
 	flag.Parse()
+
+	if *version {
+		fmt.Println("xpsarch v0.1.0")
+		return
+	}
 
 	if *chroot {
 		if err := phaseTwo(); err != nil {
