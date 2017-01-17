@@ -179,7 +179,12 @@ func installPackages() error {
 	pkgs := []string{
 		"systemd-swap",
 		"intel-ucode",
+
 		"xf86-video-intel",
+		"mesa-libgl",
+		"vulkan-intel",
+		"libva-intel-driver",
+
 		"util-linux",
 		"ufw",
 		"dosfstools",
@@ -217,19 +222,37 @@ func installPackages() error {
 		"seahorse",
 		"gnome-software",
 
-		"ttf-dejavu",
 		"adobe-source-code-pro-fonts",
-		"ttf-roboto",
-		"ttf-inconsolata",
+		"adobe-source-han-sans-cn-fonts",
+		"adobe-source-han-sans-jp-fonts",
+		"adobe-source-han-sans-kr-fonts",
+		"adobe-source-han-sans-otc-fonts",
+		"adobe-source-han-sans-tw-fonts",
+		"adobe-source-sans-pro-fonts",
 		"noto-fonts-emoji",
+		"otf-ipafont",
+		"ttf-dejavu",
+		"ttf-hanazono",
+		"ttf-inconsolata",
 		"ttf-liberation",
+		"ttf-roboto",
+		"ttf-ubuntu-font-family",
 	}
 
 	cmd := []string{"pacman", "--sync"}
 	cmd = append(cmd, pkgs...)
 	cmd = append(cmd, "--noconfirm")
 
-	return sh(cmd...)
+	if err := sh(cmd...); err != nil {
+		return err
+	}
+
+	err := fwrite("/etc/fonts/conf.d/01-notosans.conf", notosans)
+	if err != nil {
+		return err
+	}
+
+	return sh("fc-cache", "-fv")
 }
 
 func installAURs(username string) error {
@@ -263,12 +286,17 @@ func configGnome(username string) error {
 
 	cmds := [][]string{
 		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.interface", "scaling-factor", "2"},
+
 		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.touchpad", "click-method", "fingers"},
 		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.touchpad", "tap-to-click", "true"},
 		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.touchpad", "speed", "1"},
 		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.touchpad", "two-finger-scrolling-enabled", "true"},
+		{"dbus-launch", "gsettings", "set", "org.gnome.settings-daemon.peripherals.mouse", "double-click", "800"},
+
 		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.keyboard", "repeat-interval", "40"},
-		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.keyboard", "delay", "350"},
+		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.keyboard", "delay", "325"},
+
+		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.wm.preferences", "button-layout", ":minimize,maximize,close"},
 	}
 	for _, c := range cmds {
 		if err := sh(asUser(username, c)...); err != nil {
@@ -287,6 +315,10 @@ func configServices() error {
 	title("Configuring services")
 	time.Sleep(1 * time.Second)
 
+	if err := fwrite("/etc/systemd/swap.conf", swapconf); err != nil {
+		return err
+	}
+
 	cmds := [][]string{
 		{"systemctl", "enable", "gdm.service"},
 		{"systemctl", "enable", "NetworkManager.service"},
@@ -296,6 +328,7 @@ func configServices() error {
 		// Probably need to configure this...
 		{"systemctl", "enable", "systemd-swap"},
 
+		// Periodic TRIM.
 		{"systemctl", "enable", "fstrim.timer"},
 	}
 
@@ -331,7 +364,8 @@ func configBootloader() error {
 		return err
 	}
 
-	err = fwrite("/boot/loader/entries/arch.conf", fmt.Sprintf(archconf, rootID, devCryptroot))
+	err = fwrite("/boot/loader/entries/arch.conf",
+		fmt.Sprintf(archconf, rootID, devCryptroot))
 	if err != nil {
 		return err
 	}
