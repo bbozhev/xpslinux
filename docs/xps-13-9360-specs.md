@@ -4,6 +4,11 @@ Note: I replaced the stock Killer wireless chip with an [Intel chip] instead.
 
 This has the QHD+ display at 3200x1800 resolution.
 
+* Intel Core i7-7500U Processor (4M Cache, up to 3.50 GHz )
+* Intel HD Graphics 620
+* OpenGL 4.4 support
+* Intel AES New Instructions
+
 ```
 $ sudo lshw -short
 H/W path       Device   Class          Description

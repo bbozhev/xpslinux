@@ -5,7 +5,7 @@ var fstab = `#
 #
 # <file system>	<dir>	<type>	<options>	<dump>	<pass>
 # /dev/mapper/cryptroot
-UUID=%s	/         	ext4      	rw,relatime,data=ordered	0 1
+UUID=%s	/         	ext4      	relatime,data=ordered	0 1
 # /dev/sda1
 UUID=%s      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro	0 2`
 
@@ -25,6 +25,28 @@ var hosts = `#
 ::1		localhost.localdomain	localhost
 
 # End of file`
+
+var notosans = `<?xml version="1.0" ?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+    <match target="scan">
+        <test name="family">
+            <string>Noto Color Emoji</string>
+        </test>
+        <edit name="scalable" mode="assign">
+            <bool>true</bool>
+        </edit>
+    </match>
+
+    <match target="pattern">
+        <test name="prgname">
+            <string>chrome</string>
+        </test>
+        <edit name="family" mode="prepend_first">
+            <string>Noto Color Emoji</string>
+        </edit>
+    </match>
+</fontconfig>`
 
 var sudoers = `## sudoers file.
 ##
@@ -129,20 +151,78 @@ var nopasswdSudoers = `root ALL=(ALL) ALL
 %s ALL=(ALL) NOPASSWD:ALL
 #includedir /etc/sudoers.d`
 
+var swapconf = `################################################################################
+# Defaults are optimized for general usage
+################################################################################
+
+################################################################################
+# Zswap
+#
+# Kernel >= 3.11
+# Zswap create compress cache between swap and memory for reduce IO
+# https://www.kernel.org/doc/Documentation/vm/zswap.txt
+
+zswap_enabled=0
+zswap_compressor=lz4
+zswap_max_pool_percent=25
+zswap_zpool=z3fold
+
+################################################################################
+# ZRam
+#
+# Kernel >= 3.15
+# Zram compression streams count for additional information see:
+# https://www.kernel.org/doc/Documentation/blockdev/zram.txt
+
+zram_enabled=1
+zram_size=$(($ram_size/4))K # This is 1/4 of ram size by default.
+zram_streams=$cpu_count
+zram_alg=lz4 # lzo lz4 deflate lz4hc 842 - for Linux 4.8.4
+zram_prio=32767
+
+################################################################################
+# Swap File Universal
+# loop + swapfile = support any fs (also btrfs)
+swapfu_enabled=0
+# File is sparse and dynamically allocated.
+swapfu_size=${ram_size}K # Size of swap file.
+# File will not be available in fs after script start
+# Make sure what script can access to this path during the boot process.
+# Full path to swapfile
+swapfu_path=/var/swap
+swapfu_prio=-1024
+
+################################################################################
+# Swap File Chunked
+# Allocate swap files dynamically
+# Min swap size 256M, Max 16*256M
+swapfc_enabled=1
+swapfc_chunk_size=256M      # Allocate size of swap chunk
+swapfc_max_count=16         # 0 - unlimited
+swapfc_free_swap_perc=15    # Add new chunk if free < 15%
+swapfc_path=/var/.swapfc/
+
+################################################################################
+# Swap devices
+# Find and auto swapon all available swap devices
+swapd_auto_swapon=1`
+
 var mkinitcpioconf = `# vim:set ft=sh
 # MODULES
 # The following modules are loaded before any boot hooks are
 # run.  Advanced users may wish to specify all system modules
 # in this array.  For instance:
 #     MODULES="piix ide_disk reiserfs"
-MODULES=""
+MODULES="ext4 algif_skcipher dm_crypt rtsx_pci_sdmmc serio_raw " # NOTICE THE SPACE
+MODULES+="atkbd crct10dif_pclmul crc32_pclmul crc32c_intel "     # NOTICE THE SPACE
+MODULES+="ghash_clmulni_intel aesni_intel nvme xhci_pci i8042"
 
 # BINARIES
 # This setting includes any additional binaries a given user may
 # wish into the CPIO image.  This is run last, so it may be used to
 # override the actual binaries included by a given hook
 # BINARIES are dependency parsed, so you may safely ignore libraries
-BINARIES=""
+BINARIES="fsck fsck.ext4 e2fsck cryptsetup"
 
 # FILES
 # This setting is similar to BINARIES above, however, files are added
@@ -180,7 +260,8 @@ FILES=""
 #
 ##   NOTE: If you have /usr on a separate partition, you MUST include the
 #    usr, fsck and shutdown hooks.
-HOOKS="base udev block autodetect modconf consolefont encrypt filesystems keyboard fsck"
+# HOOKS="base udev block autodetect modconf consolefont encrypt filesystems keyboard fsck"
+HOOKS="base udev consolefont encrypt"
 
 # COMPRESSION
 # Use this to compress the initramfs image. By default, gzip compression
@@ -200,7 +281,7 @@ var archconf = `title   arch
 linux   /vmlinuz-linux
 initrd  /intel-ucode.img
 initrd  /initramfs-linux.img
-options cryptdevice=UUID=%s:cryptroot root=%s quiet rw`
+options cryptdevice=UUID=%s:cryptroot root=%s rw quiet vga=current loglevel=3`
 
 var loaderconf = `default  arch
 timeout  0
