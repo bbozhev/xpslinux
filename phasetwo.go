@@ -184,6 +184,7 @@ func installPackages() error {
 		"ufw",
 		"dosfstools",
 		"lshw",
+		"dmidecode",
 
 		// For gestures AUR.
 		"xdotool",
