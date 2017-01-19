@@ -8,6 +8,23 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Color emoji fonts
+- Asian fonts
+- Minimize and maximize buttons to windows
+- Configuration summary
+
+### Changed
+
+- Default keyboard delay a teeny bit shorter
+- Double-click is less sensitive
+
+### Fixed
+
+- Swap wasn't properly configured
+- mkinitcpio module warnings
+
 ## 0.1.0 - 2017-01-15
 
 ### Added

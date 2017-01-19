@@ -8,6 +8,8 @@ This has the QHD+ display at 3200x1800 resolution.
 * Intel HD Graphics 620
 * OpenGL 4.4 support
 * Intel AES New Instructions
+* HDA Intel PCH audio card
+* Realtek ALC3246 audio chip
 
 ```
 $ sudo lshw -short

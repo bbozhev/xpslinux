@@ -179,17 +179,16 @@ func installPackages() error {
 	pkgs := []string{
 		"systemd-swap",
 		"intel-ucode",
-
-		"xf86-video-intel",
-		"mesa-libgl",
-		"vulkan-intel",
-		"libva-intel-driver",
-
 		"util-linux",
 		"ufw",
 		"dosfstools",
 		"lshw",
 		"dmidecode",
+
+		"xf86-video-intel",
+		"mesa-libgl",
+		"vulkan-intel",
+		"libva-intel-driver",
 
 		// For gestures AUR.
 		"xdotool",
