@@ -294,14 +294,22 @@ func configGnome(username string) error {
 
 		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.keyboard", "repeat-interval", "40"},
 		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.peripherals.keyboard", "delay", "325"},
-
-		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.wm.preferences", "button-layout", ":minimize,maximize,close"},
 	}
 	for _, c := range cmds {
 		if err := sh(asUser(username, c)...); err != nil {
 			return err
 		}
 		if err := sh(asUser("gdm", c)...); err != nil {
+			return err
+		}
+	}
+
+	cmds = [][]string{
+		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.wm.preferences", "button-layout", ":minimize,maximize,close"},
+		{"dbus-launch", "gsettings", "set", "org.gnome.desktop.background", "picture-uri", "file:///usr/share/backgrounds/gnome/adwaita-lock.jpg"},
+	}
+	for _, c := range cmds {
+		if err := sh(asUser(username, c)...); err != nil {
 			return err
 		}
 	}
