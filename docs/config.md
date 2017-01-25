@@ -27,6 +27,7 @@ while [phasetwo] contains the steps take during the chroot.
 * Custom mkinitcpio for XPS hardware
 * systemd-boot UEFI boot manager
 * 0 second timeout boot menu
+* Install printer packages
 
 [phaseone]: https://github.com/variadico/xpslinux/blob/master/phaseone.go
 [phasetwo]: https://github.com/variadico/xpslinux/blob/master/phasetwo.go

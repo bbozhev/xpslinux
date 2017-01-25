@@ -221,6 +221,11 @@ func installPackages() error {
 		"seahorse",
 		"gnome-software",
 
+		// Printer
+		"cups",
+		"cups-pdf",
+		"gtk3-print-backends",
+
 		"adobe-source-code-pro-fonts",
 		"adobe-source-han-sans-cn-fonts",
 		"adobe-source-han-sans-jp-fonts",
@@ -329,12 +334,10 @@ func configServices() error {
 	cmds := [][]string{
 		{"systemctl", "enable", "gdm.service"},
 		{"systemctl", "enable", "NetworkManager.service"},
-
+		{"systemctl", "enable", "org.cups.cupsd.service"},
 		{"systemctl", "enable", "bluetooth.service"},
 
-		// Probably need to configure this...
-		{"systemctl", "enable", "systemd-swap"},
-
+		{"systemctl", "enable", "systemd-swap.service"},
 		// Periodic TRIM.
 		{"systemctl", "enable", "fstrim.timer"},
 	}
