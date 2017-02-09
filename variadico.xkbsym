@@ -1,23 +1,19 @@
 partial modifier_keys
 xkb_symbols "xps_modifiers" {
-    // The stock XPS keyboard has the modifiers laid out like this.
-    // ctrl - fn - super - alt [ space bar ] alt - ctrl
-    //
-    // This file will change the layout to this instead.
-    // super - fn - alt - ctrl [ space bar ] ctrl - alt
+	// The default XPS keyboard has the modifier keys laid out like this.
+	// ctrl - fn - super - alt - space - alt - ctrl
+	//
+	// This file remaps keys like this.
+	// super - fn - alt - ctrl - space - alt - ctrl
 
     key <LALT> { [ Control_L, Control_L  ] };
     key <LWIN> { [ Alt_L, Meta_L ] };
     key <LCTL> { [ Super_L ] };
 
-    key <RALT> { type[Group1] = "TWO_LEVEL",
-                 symbols[Group1] = [ Control_R, Control_R ] };
-    key <RCTL> { [ Alt_R, Meta_R ] };
-
     // ctrl keys
-    modifier_map Control { <LALT>, <RALT> };
+    modifier_map Control { <LALT> };
     // alt keys
-    modifier_map Mod1 { <LWIN>, <LCTL> };
+    modifier_map Mod1 { <LWIN> };
     // super keys
     modifier_map Mod4 { <LCTL> };
 };
