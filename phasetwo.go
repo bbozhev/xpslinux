@@ -194,7 +194,7 @@ func installPackages() error {
 		"xdotool",
 		"wmctrl",
 
-		"ffmpeg0.10",
+		"ffmpeg",
 		"pulseaudio-alsa",
 		"pulseaudio-bluetooth",
 		"bluez",
