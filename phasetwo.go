@@ -220,6 +220,7 @@ func installPackages() error {
 		"gnome-todo",
 		"seahorse",
 		"gnome-software",
+		"networkmanager",
 		"networkmanager-openvpn",
 		"networkmanager-openconnect",
 		"networkmanager-pptp",
