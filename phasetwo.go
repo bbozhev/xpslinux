@@ -150,11 +150,16 @@ func configUsers() (string, error) {
 		return "", err
 	}
 
+	// sudo is needed for sudo.
 	if err := sh("usermod", "-aG", "sudo", username); err != nil {
 		return "", err
 	}
 	// input group is needed for libinput-gestures.
 	if err := sh("usermod", "-aG", "input", username); err != nil {
+		return "", err
+	}
+	// wheel is needed for Gnome password prompts.
+	if err := sh("usermod", "-aG", "wheel", username); err != nil {
 		return "", err
 	}
 
