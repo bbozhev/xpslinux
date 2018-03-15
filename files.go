@@ -269,7 +269,7 @@ FILES=""
 ##   NOTE: If you have /usr on a separate partition, you MUST include the
 #    usr, fsck and shutdown hooks.
 # HOOKS="base udev block autodetect modconf consolefont encrypt filesystems keyboard fsck"
-HOOKS="base udev ext4 encrypt lvm2 resume consolefont"
+HOOKS="base udev encrypt lvm2 resume consolefont"
 
 # COMPRESSION
 # Use this to compress the initramfs image. By default, gzip compression
