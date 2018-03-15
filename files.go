@@ -4,10 +4,18 @@ var fstab = `#
 # /etc/fstab: static file system information
 #
 # <file system>	<dir>	<type>	<options>	<dump>	<pass>
+
 # /dev/mapper/cryptroot
-UUID=%s	/         	ext4      	relatime,data=ordered	0 1
+UUID=%s	/         	ext4      	noatime,data=ordered	0 1
+
 # /dev/sda1
-UUID=%s      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro	0 2`
+UUID=%s      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro	0 2
+
+# swap partition
+UUID=%s      none         swap        defaults  0 0
+
+# adding ramdisk with tmpfs mount
+tmpfs         /tmp	      tmpfs        defaults,noatime,mode=1777	0	0`
 
 var localeconf = `LANG=%[1]s
 LC_TIME=%[1]s`
@@ -261,7 +269,7 @@ FILES=""
 ##   NOTE: If you have /usr on a separate partition, you MUST include the
 #    usr, fsck and shutdown hooks.
 # HOOKS="base udev block autodetect modconf consolefont encrypt filesystems keyboard fsck"
-HOOKS="base udev consolefont encrypt"
+HOOKS="base udev ext4 encrypt lvm2 resume consolefont"
 
 # COMPRESSION
 # Use this to compress the initramfs image. By default, gzip compression

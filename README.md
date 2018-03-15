@@ -1,7 +1,10 @@
 # xpslinux
 
 An Arch Linux installer made for the [Dell XPS 13 9360] for people who want a
-computer that Just Works™.
+computer that Just Works™ ( LOL ) , modified a bit to fit a more secure setup.
+
+[Original Creator](https://github.com/variadico/xpslinux)
+
 
 ## Features
 
@@ -9,7 +12,9 @@ computer that Just Works™.
 * HiDPI config, font fixes
 * Touchpad guestures
 * XPS firmware updater
-* Disk encryption
+* Disk encryption with LVM
+* TMPFS 
+* Swap partition 16GBs
 
 More detailed features [here].
 
@@ -24,10 +29,13 @@ Then, start running these commands. The text will be tiny, but only until you
 run the installer.
 
 ```
-$ wifi-menu --obscure  # Select your network, enter password.
-$ curl -OL https://github.com/variadico/xpsarch/releases/download/v0.1.0/xpsarch
-$ chmod +x xpsarch
-$ ./xpsarch
+$ echo "no release has been made which corresponds to the source code so use the following command set:
+$ mount -o remount,size=4G /run/archiso/cowspace
+$ pacman -Syu go git --noconfirm
+$ git clone https://github.com/bbozhev/xpslinux.git
+$ cd xpslinux
+$ go build
+$ ./xpslinux
 ```
 
 Follow the prompts.

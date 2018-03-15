@@ -13,7 +13,10 @@ const (
 	devStorage    = "/dev/nvme0n1"
 	bootPartition = "/dev/nvme0n1p1"
 	rootPartition = "/dev/nvme0n1p2"
+	swapPartition = "/dev/nvme0n1p3"
 	devCryptroot  = "/dev/mapper/cryptroot"
+	lvmRoot				= "/dev/mapper/vg0-root"
+	lvmSwap				= "/dev/mapper/vg0-swap"
 )
 
 func phaseOne() error {
@@ -72,6 +75,10 @@ func configDisk() error {
 		{"parted", "--align", "optimal", devStorage, "mkpart", "ESP", "fat32", "1MiB", "513MiB"},
 		{"parted", devStorage, "set", "1", "boot", "on"},
 		{"parted", "--align", "optimal", devStorage, "mkpart", "primary", "ext4", "513MiB", "100%"},
+		{"pvcreate", devCryptroot},
+		{"vgcreate", "vg0", devCryptroot},
+		{"lvcreate", "--size", "16G", "vg0", "--name", "swap"},
+		{"lvcreate", "-l", "+100%FREE", "vg0", "--name", "root"},
 	}
 
 	for _, c := range cmds {
@@ -93,7 +100,8 @@ func configDisk() error {
 	}
 
 	cmds = [][]string{
-		{"mkfs.ext4", "-F", devCryptroot},
+		{"mkfs.ext4", "-F", lvmRoot},
+		{"mkswap", lvmSwap},
 		{"mkfs.fat", "-F32", bootPartition},
 
 		{"mount", devCryptroot, "/mnt"},
@@ -154,7 +162,7 @@ func installBootPackages() error {
 }
 
 func configFstab() error {
-	rootID, err := blkuuid(devCryptroot)
+	rootID, err := blkuuid(lvmRoot)
 	if err != nil {
 		return err
 	}
@@ -164,7 +172,12 @@ func configFstab() error {
 		return err
 	}
 
-	return fwrite("/mnt/etc/fstab", fmt.Sprintf(fstab, rootID, bootID))
+	swapID, err := blkuuid(lvmSwap)
+	if err != nil {
+		return err
+	}
+
+	return fwrite("/mnt/etc/fstab", fmt.Sprintf(fstab, rootID, bootID, swapID))
 }
 
 func archChroot() error {
