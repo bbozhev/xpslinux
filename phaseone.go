@@ -103,7 +103,6 @@ func configDisk() error {
 		{"mkfs.ext4", "-F", lvmRoot},
 		{"mkswap", lvmSwap},
 		{"mkfs.fat", "-F32", bootPartition},
-
 		{"mount", lvmRoot, "/mnt"},
 		{"mkdir", "/mnt/boot"},
 		{"mount", bootPartition, "/mnt/boot"},
