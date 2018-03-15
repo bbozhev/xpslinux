@@ -31,7 +31,7 @@ run the installer.
 ```
 $ echo "no release has been made which corresponds to the source code so use the following command set:
 $ mount -o remount,size=4G /run/archiso/cowspace
-$ pacman -Syu go git --noconfirm
+$ pacman -Sy go git --noconfirm
 $ git clone https://github.com/bbozhev/xpslinux.git
 $ cd xpslinux
 $ go build
