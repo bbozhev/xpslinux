@@ -354,13 +354,13 @@ func configBootloader() error {
 		return err
 	}
 
-	rootID, err := blkuuid(lvmRoot)
+	cryptID, err := blkuuid(rootPartition)
 	if err != nil {
 		return err
 	}
 
 	err = fwrite("/boot/loader/entries/arch.conf",
-		fmt.Sprintf(archconf, rootID, lvmRoot, lvmSwap))
+		fmt.Sprintf(archconf, cryptID, lvmRoot, lvmSwap))
 	if err != nil {
 		return err
 	}

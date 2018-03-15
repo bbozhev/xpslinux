@@ -268,8 +268,8 @@ FILES=""
 #
 ##   NOTE: If you have /usr on a separate partition, you MUST include the
 #    usr, fsck and shutdown hooks.
-# HOOKS="base udev block autodetect modconf consolefont encrypt filesystems keyboard fsck"
-HOOKS="base udev encrypt lvm2 resume consolefont"
+# HOOKS="base udev block autodetect modconf consolefont encrypt filesystems keyboard fsck
+HOOKS="base udev autodetect modconf block keymap encrypt lvm2 resume filesystems keyboard fsck"
 
 # COMPRESSION
 # Use this to compress the initramfs image. By default, gzip compression
@@ -290,7 +290,11 @@ linux   /vmlinuz-linux
 initrd  /intel-ucode.img
 initrd  /initramfs-linux.img
 
-options cryptdevice=UUID=%s:vg0 root=%s resume=%s rw intel_pstate=no_hwp rw quiet vga=current loglevel=3`
+
+options cryptdevice=UUID=<YOUR-PARTITION-UUID>:lvm:allow-discards resume=/dev/mapper/vg0-swap root=/dev/mapper/vg0-root rw quiet
+
+
+options cryptdevice=UUID=%s:lvm:allow-discards resume=%s root=%s rw quiet loglevel=3`
 
 var loaderconf = `default  arch
 timeout  0
