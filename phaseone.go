@@ -84,7 +84,7 @@ func configDisk() error {
 	}
 
 	cmds = [][]string{
-		{"cryptsetup", "--verify-passphrase", "--verbose", "-c aes-xts-plain64", "--key-size 512", "--hash sha512", "--iter-time 3000", "-y", "--use-random", "luksFormat", rootPartition},
+		{"cryptsetup", "--verify-passphrase", "--verbose", "-c aes-xts-plain64", "--key-size", "512", "--hash sha512", "--iter-time", "3000", "-y", "--use-random", "luksFormat", rootPartition},
 		{"cryptsetup", "open", rootPartition, "cryptroot"},
 	}
 
