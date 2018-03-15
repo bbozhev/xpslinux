@@ -38,10 +38,6 @@ func phaseTwo() error {
 		return err
 	}
 
-	if err := installAURs(username); err != nil {
-		return err
-	}
-
 	if err := configGnome(username); err != nil {
 		return err
 	}
@@ -266,26 +262,6 @@ func installPackages() error {
 	}
 
 	return sh("fc-cache", "-fv")
-}
-
-func installAURs(username string) error {
-	aurs := []string{
-		"https://aur.archlinux.org/cgit/aur.git/snapshot/libinput-gestures.tar.gz",
-		"https://aur.archlinux.org/cgit/aur.git/snapshot/systemd-boot-pacman-hook.tar.gz",
-
-		// Need to install deps first before fwupd.
-		"https://aur.archlinux.org/cgit/aur.git/snapshot/pesign.tar.gz",
-		"https://aur.archlinux.org/cgit/aur.git/snapshot/fwupdate.tar.gz",
-		"https://aur.archlinux.org/cgit/aur.git/snapshot/fwupd.tar.gz",
-	}
-
-	for _, snap := range aurs {
-		if err := installAUR(username, snap); err != nil {
-			return err
-		}
-	}
-
-	return sh("sudo", "-u", username, "libinput-gestures-setup", "autostart")
 }
 
 func configGnome(username string) error {
