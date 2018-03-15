@@ -4,7 +4,7 @@ This is a summary of configuration choices that are made on your behalf. If
 you're still curious, [phaseone] contains the steps taken before `arch-chroot`,
 while [phasetwo] contains the steps take during the chroot.
 
-* 1 LUKS-encrypted root partition
+* 2 LUKS-encrypted root partition with LVM
 * 1 non-encrypted boot partition
 * Root partition uses ext4 filesystem
 * Boot partition is UEFI
@@ -18,7 +18,6 @@ while [phasetwo] contains the steps take during the chroot.
 * Disables root login
 * Installs system utils, graphics and audio drivers, GNOME, and fonts packages
 * Color emojis
-* Gestures
 * Firmware updater
 * bootloader updater
 * GNOME keyboard and trackpad tweaks

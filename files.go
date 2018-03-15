@@ -289,7 +289,8 @@ var archconf = `title   arch
 linux   /vmlinuz-linux
 initrd  /intel-ucode.img
 initrd  /initramfs-linux.img
-options cryptdevice=UUID=%s:cryptroot root=%s rw quiet vga=current loglevel=3`
+
+options cryptdevice=UUID=%s:vg0 root=%s resume=%s rw intel_pstate=no_hwp rw quiet vga=current loglevel=3`
 
 var loaderconf = `default  arch
 timeout  0

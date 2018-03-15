@@ -32,6 +32,7 @@ it yourself due to the fact no pipeline is created for this yet.
 ```
 $ setfont latarcyrheb-sun32 # to help you see fonts better 
 $ mount -o remount,size=4G /run/archiso/cowspace # to give you package installation space
+$ wifi-menu # if you're not connected over LAN / cable setup a wifi to have internet access you will need it
 $ pacman -Sy go git --noconfirm # to not ask you stupid questions and install git and golang
 $ git clone https://github.com/bbozhev/xpslinux.git # to clone the repository 
 $ cd xpslinux # enter the repo directory 
