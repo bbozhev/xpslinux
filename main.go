@@ -14,7 +14,7 @@ func main() {
 	flag.Parse()
 
 	if *version {
-		fmt.Println("xpsarch v0.1.0")
+		fmt.Println("xpsarch v0.1.1b")
 		return
 	}
 

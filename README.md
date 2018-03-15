@@ -13,7 +13,7 @@ computer that Just Works™ ( LOL ) , modified a bit to fit a more secure setup.
 * Touchpad guestures
 * XPS firmware updater
 * Disk encryption with LVM
-* TMPFS 
+* TMPFS
 * Swap partition 16GBs
 
 More detailed features [here].
@@ -30,15 +30,17 @@ run the installer, however there is no current build and you will need to build
 it yourself due to the fact no pipeline is created for this yet.
 
 ```
-$ setfont latarcyrheb-sun32                             # to help you see fonts better 
+$ setfont latarcyrheb-sun32                             # to help you see fonts better
 $ mount -o remount,size=4G /run/archiso/cowspace        # to give you package installation space
 $ wifi-menu                                             # if you're not connected over LAN / cable setup a wifi to have internet access you will need it
 $ pacman -Sy go git --noconfirm                         # to not ask you stupid questions and install git and golang
-$ git clone https://github.com/bbozhev/xpslinux.git     # to clone the repository 
-$ cd xpslinux                                           # enter the repo directory 
-$ go build                                              # build the THING 
+$ git clone https://github.com/bbozhev/xpslinux.git     # to clone the repository
+$ cd xpslinux                                           # enter the repo directory
+$ go build                                              # build the THING
 $ ./xpslinux                                            # execute the THING
 ```
+
+* Be very careful when entering the user password, as the keyboard is very soft and the current source will cut off the install if you do not provide the confirmation password correctly   
 
 Follow the prompts.
 
