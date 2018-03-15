@@ -75,10 +75,6 @@ func configDisk() error {
 		{"parted", "--align", "optimal", devStorage, "mkpart", "ESP", "fat32", "1MiB", "513MiB"},
 		{"parted", devStorage, "set", "1", "boot", "on"},
 		{"parted", "--align", "optimal", devStorage, "mkpart", "primary", "ext4", "513MiB", "100%"},
-		{"pvcreate", devCryptroot},
-		{"vgcreate", "vg0", devCryptroot},
-		{"lvcreate", "--size", "16G", "vg0", "--name", "swap"},
-		{"lvcreate", "-l", "+100%FREE", "vg0", "--name", "root"},
 	}
 
 	for _, c := range cmds {
@@ -100,6 +96,10 @@ func configDisk() error {
 	}
 
 	cmds = [][]string{
+		{"pvcreate", devCryptroot},
+		{"vgcreate", "vg0", devCryptroot},
+		{"lvcreate", "--size", "16G", "vg0", "--name", "swap"},
+		{"lvcreate", "-l", "+100%FREE", "vg0", "--name", "root"},
 		{"mkfs.ext4", "-F", lvmRoot},
 		{"mkswap", lvmSwap},
 		{"mkfs.fat", "-F32", bootPartition},
