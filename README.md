@@ -26,16 +26,17 @@ Next, plug it into your Dell XPS. Press the power button, then immediately hit
 the F12 button. Select your USB from the boot list.
 
 Then, start running these commands. The text will be tiny, but only until you
-run the installer.
+run the installer, however there is no current build and you will need to build
+it yourself due to the fact no pipeline is created for this yet.
 
 ```
-$ echo "no release has been made which corresponds to the source code so use the following command set:
-$ mount -o remount,size=4G /run/archiso/cowspace
-$ pacman -Sy go git --noconfirm
-$ git clone https://github.com/bbozhev/xpslinux.git
-$ cd xpslinux
-$ go build
-$ ./xpslinux
+$ setfont latarcyrheb-sun32 # to help you see fonts better 
+$ mount -o remount,size=4G /run/archiso/cowspace # to give you package installation space
+$ pacman -Sy go git --noconfirm # to not ask you stupid questions and install git and golang
+$ git clone https://github.com/bbozhev/xpslinux.git # to clone the repository 
+$ cd xpslinux # enter the repo directory 
+$ go build # build the THING 
+$ ./xpslinux # execute the THING
 ```
 
 Follow the prompts.
