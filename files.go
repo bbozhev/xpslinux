@@ -290,10 +290,6 @@ linux   /vmlinuz-linux
 initrd  /intel-ucode.img
 initrd  /initramfs-linux.img
 
-
-options cryptdevice=UUID=<YOUR-PARTITION-UUID>:lvm:allow-discards resume=/dev/mapper/vg0-swap root=/dev/mapper/vg0-root rw quiet
-
-
 options cryptdevice=UUID=%s:lvm:allow-discards resume=%s root=%s rw quiet loglevel=3`
 
 var loaderconf = `default  arch
