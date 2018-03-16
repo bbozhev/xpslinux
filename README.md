@@ -1,5 +1,4 @@
 # xpslinux
-# DO NOT USE , WIP currently broken
 
 An Arch Linux installer made for the [Dell XPS 13 9360] for people who want a
 computer that Just Works™ ( LOL ) , modified a bit to fit a more secure setup.
