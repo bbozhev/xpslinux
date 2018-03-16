@@ -360,7 +360,7 @@ func configBootloader() error {
 	}
 
 	err = fwrite("/boot/loader/entries/arch.conf",
-		fmt.Sprintf(archconf, cryptID, lvmRoot, lvmSwap))
+		fmt.Sprintf(archconf, cryptID, lvmSwap, lvmRoot))
 	if err != nil {
 		return err
 	}
