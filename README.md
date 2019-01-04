@@ -5,8 +5,6 @@ computer that Just Works™ ( LOL ) , modified a bit to fit a more secure setup.
 
 [Original Creator](https://github.com/variadico/xpslinux)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b1c77eefcca64fd4b0a6a11a31fc8cfa)](https://www.codacy.com/app/bbozhev/xpslinux?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=bbozhev/xpslinux&amp;utm_campaign=Badge_Grade)
-
 ## Features
 
 * Minimal XPS configuration
