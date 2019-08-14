@@ -13,8 +13,5 @@ blocks:
         - name: Run Go
           commands:
             - go version
+            - checkout
             - go build
-            - go make
-            # Uncomment the following line to pull your code,
-            # then proceed by adding your custom commands:
-            #- checkout
