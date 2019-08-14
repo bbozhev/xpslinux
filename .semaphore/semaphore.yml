@@ -15,3 +15,4 @@ blocks:
             - go version
             - checkout
             - go build
+            - ./xpslinux --version
